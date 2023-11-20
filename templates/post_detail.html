@@ -1,0 +1,28 @@
+<!-- post_detail.html -->
+
+{#<h1>{{ post.title }}</h1>#}
+{#<p>{{ post.content }}</p>#}
+{#<p>Author: {{ post.author.username }}</p>#}
+{#<p>Created at: {{ post.created_at }}</p>#}
+{#<p>Updated at: {{ post.updated_at }}</p>#}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }} - Blog Detail</title>
+</head>
+<body>
+{#    <h1>{{ post.title }} - Blog </h1>#}
+
+{#    <div>#}
+{#        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">#}
+{#    </div>#}
+    <h2>{{ post.title }}</h2>
+    <p>{{post.content }}</p>
+    <a href="{% url 'post_edit' post.pk %}">Edit</a>
+    <a href="{% url 'post_delete' post.pk %}">Delete</a> <br>
+
+    <a href="{% url 'post_list' %}">Back to Blogs Home Page</a>
+</body>
+</html>
