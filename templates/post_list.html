@@ -31,15 +31,15 @@
                     <a href="{% url 'post_detail' pk=post.pk %}">Details</a>
                 </div>
 
-               <div class="text-center">
+               <div class="text-center flex space-around">
                   {% if perms.gallery.add_post %}
-                   <a href="{% url 'post_new' %}">New</a>
+                   <a href="{% url 'post_new' %}" class="btn btn-info w-20 mt-3">New</a>
                {% endif %}
                  {% if perms.gallery.change_post %}
-                            <a href="{% url 'post_edit' employee.id %}" class="btn btn-info w-100 mt-3">Update</a>
+                            <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-info w-20 mt-3">Update</a>
                         {% endif %}
                    {% if perms.gallery.delete_post %}
-                            <a href="{% url 'post_delete' employee.id %}" class="btn btn-danger w-100">Delete</a>
+                            <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger w-20 mt-3">Delete</a>
                         {% endif %}
                </div>
                 <div class="card-footer">
