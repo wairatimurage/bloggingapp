@@ -1,59 +1,27 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#	<meta charset="UTF-8">#}
-{#	<meta name="viewport" content="width=device-width, initial-scale=1.0">#}
-{#	<title>Blog Website</title>#}
-{#	<!-- Add Bootstrap CSS link here -->#}
-{#	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">#}
-{#</head>#}
-{#<body>#}
-{#	<div class="container mt-5">#}
-{#		<h1 class="text-center">Today's New Blogs</h1>#}
-{#		<div class="row">#}
-{#			{% for product in products %}#}
-{#				<div class="col-md-4 mb-4">#}
-{#					<div class="card">#}
-{#						<a href="{% url 'product_detail' product.pk %}">#}
-{#							<img src="{{ product.image.url }}" alt="{{ product.created_name }}" class="card-img-top">#}
-{#						</a>#}
-{#						<div class="card-body">#}
-{#							<h5 class="card-title">{{ product.name }}</h5>#}
-{#							<p class="card-text">{{ product.short_description }}</p>#}
-{#							<a href="{% url 'edit_product' product.pk %}">Edit</a>#}
-{#							<a href="{% url 'delete_product' product.pk %}">Delete</a> <br>#}
-{#							<small class="card-text">Created at: {{ product.created_at }}</small> <br>#}
-{#							<small class="card-text">Updated at: {{ product.updated_at }}</small>#}
-{#						</div>#}
-{#					</div>#}
-{#				</div>#}
-{#			{% endfor %}#}
-{#		</div>#}
-{#	</div>#}
-{##}
-{##}
-{#	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
-{#	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>#}
-{#	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>#}
-{#</body>#}
-{#</html>#}
+{% extends "base_template.html" %}
+{% load static %}
 
-<!-- post_list.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Posts</title>
+    {% block title %}
+    Blog Posts
+{% endblock %}
+
     <!-- Add Bootstrap CSS link here -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static 'post/css/index.css' %}">
 </head>
 <body>
+{% block content %}
+    {% include 'navbar.html' %}
     <div class="container mt-5">
         <h1 class="mb-4">Blog Posts</h1>
 
         {% for post in posts %}
-            <div class="card mb-4">
+            <div class="card mb-4 flex">
 
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
@@ -64,9 +32,15 @@
                 </div>
 
                <div class="text-center">
-                    <a href="{% url 'post_new' %}">New</a>
-                <a href="{% url 'post_edit' pk=post.pk %}">Edit</a>
-                   <a href="{% url 'post_delete' pk=post.pk %}">Delete</a>
+                  {% if perms.gallery.add_post %}
+                   <a href="{% url 'post_new' %}">New</a>
+               {% endif %}
+                 {% if perms.gallery.change_post %}
+                            <a href="{% url 'post_edit' employee.id %}" class="btn btn-info w-100 mt-3">Update</a>
+                        {% endif %}
+                   {% if perms.gallery.delete_post %}
+                            <a href="{% url 'post_delete' employee.id %}" class="btn btn-danger w-100">Delete</a>
+                        {% endif %}
                </div>
                 <div class="card-footer">
                     <small class="text-muted">Last updated: {{ post.updated_at }}</small>
@@ -74,11 +48,37 @@
             </div>
         {% endfor %}
     </div>
+    <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if posts.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href='?page={{ posts.previous_page_number }}'>Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href='' tabindex="-1" aria-disabled="True">Previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% if posts.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href='?page={{ posts.next_page_number }}'>Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href='' tabindex="-1" aria-disabled="True">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
 
     <!-- Add Bootstrap JS and jQuery scripts here (if needed) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
+{% endblock %}
 
