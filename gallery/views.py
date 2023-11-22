@@ -35,7 +35,7 @@ def post_detail(request, pk):
 @permission_required('gallery.add_post', raise_exception=True)
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
