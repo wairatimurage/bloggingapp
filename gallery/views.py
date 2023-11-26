@@ -10,7 +10,7 @@ from django.utils import timezone
 
 import gallery.views
 from .app_form import PostForm, LoginForm
-from .models import Post
+from .models import Post, Category
 from django.shortcuts import redirect
 
 
@@ -38,11 +38,13 @@ def post_new(request):
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
+            post.author = request.user  # Set the author to the logged-in user
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
+        categories = Category.objects.all()
         form = PostForm()
-    return render(request, 'post_edit.html', {'form': form})
+    return render(request, 'post_edit.html', {'form': form, 'categories': categories})
 
 
 @login_required
@@ -58,8 +60,9 @@ def post_edit(request, pk):
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
+        categories = Category.objects.all()
         form = PostForm(instance=post)
-    return render(request, 'post_edit.html', {'form': form})
+    return render(request, 'post_edit.html', {'form': form, 'categories': categories})
 
 
 @login_required
@@ -111,3 +114,11 @@ def search(request):
     data = paginator.get_page(page_number)
     # Elastic search
     return render(request, "post_list.html", {"posts": data})
+
+
+@login_required
+@permission_required('gallery.view_post', raise_exception=True)
+def category_posts(request, category_id):
+    category = get_object_or_404(Category, pk=category_id)
+    posts = Post.objects.filter(category=category)
+    return render(request, 'category_posts.html', {'category': category, 'posts': posts})

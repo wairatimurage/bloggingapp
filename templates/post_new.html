@@ -1,8 +1,28 @@
-<!-- post_edit.html -->
-
+{% extends 'base_template2.html' %}
+{% load crispy_forms_filters %}
+{% block content %}
 <h1>New Post</h1>
-<form method="post" class="post-form" enctype="multipart/form-data">
+<form method="post" class="post-form" enctype="multipart/form-data" class="shadow py-4 px-3 mt-3">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title:</label>
+        {{ form.title }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">Content:</label>
+        {{ form.content }}
+    </div>
+    <div class="form-group">
+        <label for="{{ form.image.id_for_label }}">Image:</label>
+        {{ form.image }}
+    </div>
+
+    <label for="id_category">Category:</label>
+    <select name="category" id="id_category">
+        {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+    </select>
     <button type="submit" class="save btn btn-default">Save</button>
 </form>
+{% endblock %}

@@ -1,24 +1,29 @@
-<nav class="navbar navbar-dark sticky-top navbar-expand-lg bg-dark">
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'post_list' %}">Bloggers </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="{% url 'post_list' %}">Bloggers</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <div class="collapse navbar-collapse" id="mynavbar">
             <form class="d-flex space-between " role="search" method="get" action="{% url 'search' %}">
-                <input class="form-control me-2" name="search_word" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control me-2" name="search_word" type="search" placeholder="Search"
+                       aria-label="Search">
                 <button class="btn btn-outline-success " type="submit">Search</button>
-
-               <ul class="navbar-nav ms-8 mb-2 mb-lg-0 ml-auto">
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-danger d-flex justify-content-between" href="#" role="button" data-toggle="dropdown">{{ user.first_name }}</a>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item text-danger" href="{% url 'signout' %}">Sign Out</a></li>
-        </ul>
-    </li>
-</ul>
-
             </form>
+            <div>
+            </div>
         </div>
+        <ul class="navbar-nav ml-auto">
+            <div class="dropdown" style="display: flex">
+                <i class="bi bi-person"></i>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                    {{ user.first_name }}
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item text-danger" href="{% url 'signout' %}">Sign Out</a></li>
+
+                </ul>
+            </div>
+        </ul>
     </div>
 </nav>

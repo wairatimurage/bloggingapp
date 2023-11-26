@@ -1,28 +1,26 @@
-<!-- post_detail.html -->
+{% extends 'base_template2.html' %}
+{% block content %}
 
-{#<h1>{{ post.title }}</h1>#}
-{#<p>{{ post.content }}</p>#}
-{#<p>Author: {{ post.author.username }}</p>#}
-{#<p>Created at: {{ post.created_at }}</p>#}
-{#<p>Updated at: {{ post.updated_at }}</p>#}
+    <div class="container">
+        <div class="card-body">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }} Image" class="img-detail">
+            {% endif %}
+            <h2 class="text-center">{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+            <div class="text-center flex">
+                {% if perms.gallery.add_post %}
+                    <a href="{% url 'post_new' %}" class="btn btn-info">New</a>
+                {% endif %}
+                {% if perms.gallery.change_post %}
+                    <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-info">Update</a>
+                {% endif %}
+                {% if perms.gallery.delete_post %}
+                    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
+        </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ post.title }} - Blog Detail</title>
-</head>
-<body>
-{#    <h1>{{ post.title }} - Blog </h1>#}
-
-{#    <div>#}
-{#        <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">#}
-{#    </div>#}
-    <h2>{{ post.title }}</h2>
-    <p>{{post.content }}</p>
-    <a href="{% url 'post_edit' post.pk %}">Edit</a>
-    <a href="{% url 'post_delete' post.pk %}">Delete</a> <br>
-
-    <a href="{% url 'post_list' %}">Back to Blogs Home Page</a>
-</body>
-</html>
+        <a href="{% url 'post_list' %}" class="btn btn-secondary w-180">Back To Home </a>
+    </div>
+{% endblock %}
