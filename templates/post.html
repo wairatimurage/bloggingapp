@@ -1,25 +1,47 @@
 <div class="container mt-5">
     <div class="row">
-        {% for post in posts %}
-            <div class="col-md-4 mb-5">
-                <div class="card">
-                    <div class="card-body">
-                        {% if post.image %}
-                            <img src="{{ post.image.url }}" alt="{{ post.title }} Image" class="img-fluid post-img">
-                        {% endif %}
-                        {% if post.category %}
-                            <h5 class="card-title text-info"><i class="bi bi-hash text-info"></i>{{ post.category.name }}</h5>
-                        {% endif %}
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">{{ post.content|truncatewords:50 }}...</p>
-
-                        <p class="card-text text-success"><i class="bi bi-alarm"></i>{{ post.created_at }}...</p>
-                        <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-info w-100 mt-3">Read More</a>
+        <div class="col-md-9">
+            <div class="row">
+                {% for post in posts %}
+                    <div class="col-md-4 mb-5">
+                        <div class="card">
+                            <div class="card-body">
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" alt="{{ post.title }} Image"
+                                         class="img-fluid post-img">
+                                {% endif %}
+                                {% if post.category %}
+                                    <h5 class="card-title text-info"><i
+                                            class="bi bi-hash text-info"></i>{{ post.category.name }}</h5>
+                                {% endif %}
+                                <h5 class="card-title">{{ post.title }}</h5>
+                                <p class="card-text">{{ post.content|truncatewords:50 }}...</p>
+                                <p class="card-text text-success"><i class="bi bi-alarm"></i>{{ post.created_at }}...
+                                </p>
+                                <a href="{% url 'post_detail' pk=post.pk %}" class="btn btn-info w-100 mt-3">Read
+                                    More</a>
+                            </div>
+                        </div>
                     </div>
-
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
+<div class="col-md-3">
+    <div id="sidebar" class="bg-light p-3">
+        <h2 class="h5">Categories</h2>
+        <ul id="category-list" class="list-group">
+            {% for category in categories %}
+                <li class="list-group-item{% if category == selected_category %} active{% endif %}">
+                    <a href="{% url 'post_list_filtered' category=category.name %}" class="text-decoration-none text-dark category-link">
+                        {{ category.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
+
+
+    </div>
+</div>

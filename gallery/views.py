@@ -16,12 +16,21 @@ from django.shortcuts import redirect
 
 @login_required
 @permission_required('gallery.view_post', raise_exception=True)
-def post_list(request):
-    posts = Post.objects.all()
+def post_list(request, category=None):
+    if category:
+        # Use get_object_or_404 to handle the case where the category doesn't exist
+        selected_category = get_object_or_404(Category, name=category)
+        posts = Post.objects.filter(category=selected_category)
+    else:
+        posts = Post.objects.all()
+        selected_category = None  # No specific category selected
+
+    categories = Category.objects.all()  # Fetch all categories
     paginator = Paginator(posts, 10)
     page_number = request.GET.get("page")
     data = paginator.get_page(page_number)
-    return render(request, 'post_list.html', {'posts': data})
+
+    return render(request, 'post_list.html', {'posts': data, 'categories': categories, 'selected_category': selected_category})
 
 
 @login_required
@@ -115,10 +124,9 @@ def search(request):
     # Elastic search
     return render(request, "post_list.html", {"posts": data})
 
-
-@login_required
-@permission_required('gallery.view_post', raise_exception=True)
-def category_posts(request, category_id):
-    category = get_object_or_404(Category, pk=category_id)
-    posts = Post.objects.filter(category=category)
-    return render(request, 'category_posts.html', {'category': category, 'posts': posts})
+# @login_required
+# @permission_required('gallery.view_post', raise_exception=True)
+# def category_posts(request, category_id):
+#     category = get_object_or_404(Category, pk=category_id)
+#     posts = Post.objects.filter(category=category)
+#     return render(request, 'category_posts.html', {'category': category, 'posts': posts})

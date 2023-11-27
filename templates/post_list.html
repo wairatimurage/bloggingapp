@@ -9,6 +9,7 @@
 {% block content %}
 
     <!-- Carousel -->
+
     <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
         <!-- Indicators/dots -->
@@ -40,6 +41,8 @@
         </button>
     </div>
     {% include 'post.html' %}
+
+
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             {% if posts.has_previous %}
@@ -63,6 +66,7 @@
             {% endif %}
         </ul>
     </nav>
+
 
 
 

@@ -6,7 +6,10 @@
             {% if post.image %}
                 <img src="{{ post.image.url }}" alt="{{ post.title }} Image" class="img-detail">
             {% endif %}
-            <h2 class="text-center">{{ post.title }}</h2>
+            {% if post.category %}
+                <h5 class="card-title text-info"><i class="bi bi-hash text-info"></i>{{ post.category.name }}</h5>
+            {% endif %}
+            <h5 class="card-title text-center text-info">{{ post.title }}</h5>
             <p>{{ post.content }}</p>
             <div class="text-center flex">
                 {% if perms.gallery.add_post %}
